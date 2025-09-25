@@ -1,44 +1,65 @@
 import UserModel from "../model/user.model.js";
-import {vaidator} from 'validator';
-import {bcrypt} from 'bcrypt.js';
+import validator from 'validator';
+import bcrypt from 'bcrypt';
+import uploadOnCloudinary from "../config/cloudinary.js";
 
-export const register = async(req,res)=>{
-    try {
-        const {userName,email,password} = req.body;
-        let photoUrl;
-        if(req.file){
-            photoUrl = await uploadOnCloudinary(req.file.path);
-        };
 
-        const existUser = await UserModel.fineOne({email});
-        if(existUser){
-            return res.status(400).json({message:'User is already exist',success:false});
-        };
 
-        if(!validator.isEmail(email)){
-            return res.status(400).json({message:'Email is not valid',success:false});
-        };
 
-        if(password.length < 8){
-            return res.status(400).json({message:'Your password is not strong please do make',success:false});
-        };
 
-        const hashPassword = await bcrypt.hash(password,10);
-         const user = await UserModel.create({
-            userName,
-            email,
-            password:hashPassword,
-            photoUrl
-         });
+export const register = async (req, res) => {
+  try {
+    const { userName, email, password } = req.body;
+    let photoUrl;
 
-       
-         res.status(201).json({message:'User created successfully',user,success:true});
-
-    } catch (error) {
-        console.log('While register user');
-        res.status(500).json({message:'Enter Server Error'});
+    // Upload photo if file is present
+    if (req.file) {
+      photoUrl = await uploadOnCloudinary(req.file.path);
     }
-}
+
+    // Check if user already exists
+    const existUser = await UserModel.findOne({ email });
+    if (existUser) {
+      return res
+        .status(400)
+        .json({ message: "User already exists", success: false });
+    }
+
+    // Validate email
+    if (!validator.isEmail(email)) {
+      return res
+        .status(400)
+        .json({ message: "Invalid email", success: false });
+    }
+
+    // Validate password strength
+    if (password.length < 8) {
+      return res.status(400).json({
+        message: "Password must be at least 8 characters long",
+        success: false,
+      });
+    }
+
+    // Hash password
+    const hashPassword = await bcrypt.hash(password, 10);
+
+    // Create new user
+    const user = await UserModel.create({
+      userName,
+      email,
+      password: hashPassword,
+      photoUrl,
+    });
+
+    res
+      .status(201)
+      .json({ message: "User created successfully", user, success: true });
+  } catch (error) {
+    console.log("While register user", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 
 //sign in 
 export const login = async(req, res)=>{

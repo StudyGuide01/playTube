@@ -1,13 +1,36 @@
 import React from 'react'
 
-const StepTwo = () => {
+const StepTwo = ({email, showPassword, setShowPassword,step, setStep,password, setPassword, confirmPassword,setConfirmPassword }) => {
   return (
     <>
-    <p>Email</p>
-    <div className='flex flex-col'>
-        <input type='password' name='password' placeholder='Password'/>
-        <input type="password" name='confirmPassword' placeholder='Confirm Password' />
-    </div>
+      <p>{email}</p>
+      <div className='flex flex-col gap-6 mt-5 max-w-[500px] mx-auto'>
+        <input
+          type={showPassword ? 'text' : 'password'}
+          value={password}
+          onChange={(e)=>setPassword(e.target.value)}
+          name='password'
+          placeholder='Password'
+          className='border border-slate-400'
+        />
+        <input
+          type={showPassword ? 'text' : 'password'}
+              value={confirmPassword}
+          onChange={(e)=>setConfirmPassword(e.target.value)}
+          placeholder='Confirm Password'
+          className='border border-slate-400'
+        />
+        <div>
+          <input
+            type="checkbox"
+            checked={showPassword}
+            onChange={(e) => setShowPassword(e.target.checked)}
+          />
+          &nbsp;&nbsp; Show Password
+        </div>
+
+        <button onClick={()=>setStep(step + 1)}>Next</button>
+      </div>
     </>
   )
 }

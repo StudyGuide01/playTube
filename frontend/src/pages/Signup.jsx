@@ -4,6 +4,7 @@ import { FaLongArrowAltLeft } from "react-icons/fa";
 import StepTwo from '../parts/signupParts/StepTwo';
 import StepThree from '../parts/signupParts/StepThree';
 import axios from 'axios';
+import { showCustomAlert } from '../components/commen/CustomAlert';
 
 
 const Signup = () => {
@@ -36,10 +37,19 @@ const handleSubmit = async()=>{
 
     const response = await axios.post(`http://localhost:8000/api/v1/user/register`,formData,{withCredentials:true});
     console.log(response.data);
+    showCustomAlert(response.data.message);
      setLoading(false)
   } catch (error) {
-    console.log('Error to submit Signup Form ',error);
-     setLoading(false);
+     console.log("Error to submit Signup Form", error);
+
+  
+    if (error.response && error.response.data && error.response.data.message) {
+      showCustomAlert(error.response.data.message);
+    } else {
+      showCustomAlert("Something went wrong! Please try again.");
+    }
+
+    setLoading(false);
   }
 }
    

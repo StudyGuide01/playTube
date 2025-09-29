@@ -1,9 +1,11 @@
 import React from 'react'
 
-const StepTwo = ({email, showPassword, setShowPassword,step, setStep,password, setPassword, confirmPassword,setConfirmPassword }) => {
+const StepTwo = ({email,setEmail, showPassword, setShowPassword,step, setStep,password, setPassword, confirmPassword,setConfirmPassword,handleSignIn }) => {
+  const location = window.location.pathname;
+  
   return (
     <>
-      <p>{email}</p>
+
       <div className='flex flex-col gap-6 mt-5 max-w-[500px] mx-auto'>
         <input
           type={showPassword ? 'text' : 'password'}
@@ -13,13 +15,24 @@ const StepTwo = ({email, showPassword, setShowPassword,step, setStep,password, s
           placeholder='Password'
           className='border border-slate-400'
         />
-        <input
+          {location === '/signin' ? <>
+            <input
+          type='email'
+              value={email}
+          onChange={(e)=>setEmail(e.target.value)}
+          placeholder='Email'
+          className='border border-slate-400'
+        />
+           </>
+            :
+            <>   <input
           type={showPassword ? 'text' : 'password'}
               value={confirmPassword}
           onChange={(e)=>setConfirmPassword(e.target.value)}
           placeholder='Confirm Password'
           className='border border-slate-400'
-        />
+        /></>}
+      
         <div>
           <input
             type="checkbox"
@@ -29,7 +42,8 @@ const StepTwo = ({email, showPassword, setShowPassword,step, setStep,password, s
           &nbsp;&nbsp; Show Password
         </div>
 
-        <button onClick={()=>setStep(step + 1)}>Next</button>
+      {location === '/signin' ? <><button onClick={handleSignIn}>Create Acoount</button></> : <><button onClick={()=>setStep(step + 1)}>Next</button></>}
+        
       </div>
     </>
   )

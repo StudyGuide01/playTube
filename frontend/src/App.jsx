@@ -1,4 +1,5 @@
 import CustomAlert from "./components/commen/CustomAlert";
+import ForgotPass from "./components/layout/ForgotPass";
 import useGetCurrentsUser from "./hooks/useGetCurrentsUser";
 import HomeChild from "./layouts/HomeChild";
 import Shorts from "./layouts/Shorts";
@@ -20,6 +21,7 @@ export default function App() {
         </Route>
         <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<Signin />} />
+        <Route path="/forgotPass" element={<ForgotPass/>}></Route>
 
       </Routes>
     </BrowserRouter>

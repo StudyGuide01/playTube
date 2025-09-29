@@ -35,8 +35,6 @@ const handleGoogleLogin = async () => {
       formData,
       { withCredentials: true }
     );
-
-    console.log(result);
     dispatch(setCurrentUser(result.data));
     setOpenProfileModel(false);
   } catch (error) {

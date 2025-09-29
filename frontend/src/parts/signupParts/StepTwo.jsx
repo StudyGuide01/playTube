@@ -1,7 +1,9 @@
-import React from 'react'
+import {useLocation, useNavigate} from 'react-router-dom'
 
 const StepTwo = ({email,setEmail, showPassword, setShowPassword,step, setStep,password, setPassword, confirmPassword,setConfirmPassword,handleSignIn }) => {
-  const location = window.location.pathname;
+  const location = useLocation();
+  const navigate = useNavigate();
+  
   
   return (
     <>
@@ -42,7 +44,10 @@ const StepTwo = ({email,setEmail, showPassword, setShowPassword,step, setStep,pa
           &nbsp;&nbsp; Show Password
         </div>
 
-      {location === '/signin' ? <><button onClick={handleSignIn}>Create Acoount</button></> : <><button onClick={()=>setStep(step + 1)}>Next</button></>}
+     <div className='flex justify-between'>
+      {location.pathname === '/signin'  && <><button onClick={navigate('/forgotPass')} >Forgot Password</button></>}
+       {location.pathname === '/signin' ? <><button onClick={handleSignIn}>Create Acoount</button></> : <><button onClick={()=>setStep(step + 1)}>Next</button></>}
+     </div>
         
       </div>
     </>

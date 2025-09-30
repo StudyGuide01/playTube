@@ -1,19 +1,15 @@
 import axios from 'axios';
 import React, { useState } from 'react'
-import { useEffect } from 'react';
+
 
 const ForgotPass = () => {
     const [step,setStep] = useState(2);
     const [email, setEmail] = useState('');
     const [otp,setOTP] = useState('');
     const [password,setPassword] =  useState('');
-    const [resetTime,setResetTime] = useState(60);
 
-    useEffect(()=>{
-        setTimeout(()=>{
-            setResetTime(resetTime - 1);
-        },1000);
-    },[resetTime])
+
+  
     
 
 
@@ -89,7 +85,7 @@ const handleResetPassword = async () => {
     <label htmlFor="otp">Verify Your OTP</label>
     <input value={otp}  onChange={(e)=>setOTP(e.target.value)} type="text" placeholder='otp' className='border border-black' />
     <button onClick={handleVerifyOTP} className='border border-black mx-auto py-1 px-3 rounded-lg'>Verify OTP</button>
-    <button>{resetTime}  Reset </button>
+
 </div>
 }
 

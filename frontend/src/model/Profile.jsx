@@ -4,10 +4,12 @@ import { setCurrentUser } from "../redux/userSlice";
 import axios from "axios";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../uttils/googleAuth";
+import { useNavigate } from "react-router-dom";
 
 const Profile = ({ setOpenProfileModel }) => {
   const { currentUser } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const hanldelogout = async () => {
     const response = await axios.get(
@@ -56,7 +58,7 @@ const handleGoogleLogin = async () => {
           <div>
             <h3>{currentUser?.userName}</h3>
             <p>{currentUser?.email}</p>
-            <p className="cursor-pointer text-blue-500  hover:text-white">
+            <p className="cursor-pointer text-blue-500  hover:text-white" onClick={()=>{currentUser?.channel ? navigate('/viewChannel') : navigate('/createChannel')}}>
               {currentUser?.channel ? "view channel " : "create channel"}
             </p>
           </div>

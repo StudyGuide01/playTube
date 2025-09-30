@@ -22,6 +22,9 @@ export default function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/forgotPass" element={<ForgotPass/>}></Route>
+        {/* <Route path="/viewChannel" element={</ViewChannel>}></Route> */}
+         {/* <Route path="/createChannel" element={<CreateChannel/>}></Route> */}
+
 
       </Routes>
     </BrowserRouter>

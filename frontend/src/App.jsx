@@ -1,4 +1,5 @@
 import CustomAlert from "./components/commen/CustomAlert";
+import CreateChannel from "./components/layout/CreateChannel";
 import ForgotPass from "./components/layout/ForgotPass";
 import useGetCurrentsUser from "./hooks/useGetCurrentsUser";
 import HomeChild from "./layouts/HomeChild";
@@ -23,7 +24,7 @@ export default function App() {
         <Route path="/signin" element={<Signin />} />
         <Route path="/forgotPass" element={<ForgotPass/>}></Route>
         {/* <Route path="/viewChannel" element={</ViewChannel>}></Route> */}
-         {/* <Route path="/createChannel" element={<CreateChannel/>}></Route> */}
+         <Route path="/createChannel" element={<CreateChannel/>}></Route>
 
 
       </Routes>

@@ -16,7 +16,7 @@ const ForgotPass = () => {
     const handleSendOTP = async()=>{
         try {
             const response = await axios.post(`http://localhost:8000/api/v1/user/sendOTP`,{email},{withCredentials:true});
-            console.log(response);
+          
              if(step>=1){
             setStep( step + 1);
         }
@@ -34,7 +34,7 @@ const handleVerifyOTP = async () => {
       { withCredentials: true }
     );
 
-    console.log("Verify OTP Response:", response.data);
+  
 
     // Go to next step if valid
     if (step >= 1) {
@@ -58,7 +58,6 @@ const handleResetPassword = async () => {
       { withCredentials: true }
     );
 
-    console.log("Password Reset:", response.data);
 
  
   } catch (error) {

@@ -5,6 +5,7 @@ import {useDispatch, useSelector } from "react-redux";
 import { setChannel } from "../redux/channelSlice";
 // import { setChannel } from "../redux/channelSlice";
 import { useNavigate } from "react-router-dom";
+import { refreshCurrentUser } from "../redux/userSlice";
 
 const UpdateChannel = () => {
     const dispatch = useDispatch();
@@ -73,6 +74,7 @@ const handleUpdateChannel = async () => {
         //  Redux update
         if(response.data.success && response.data.channel){
             dispatch(setChannel(response.data.channel));
+            dispatch(refreshCurrentUser());
 
             //  Navigate only after Redux update
             navigate('/viewChannel');

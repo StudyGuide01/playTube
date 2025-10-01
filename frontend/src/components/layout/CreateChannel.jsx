@@ -29,7 +29,7 @@ const CreateChannel = () => {
         formData.append('banner',banner);
         try {
             const response = await axios.post(`http://localhost:8000/api/v1/channel/createChannel`,formData,{withCredentials:true});
-            console.log(response.data);
+            
         } catch (error) {
             console.log(error);
         }

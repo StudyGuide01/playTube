@@ -3,9 +3,11 @@ import { useSelector } from 'react-redux'
 import { VscGitPullRequestCreate } from "react-icons/vsc";
 import { useNavigate } from 'react-router-dom';
 import useGetChannel from '../hooks/useGetChannel';
+// import useGetCurrentsUser from '../hooks/useGetCurrentsUser';
 
 const ViewChannel = () => {
       useGetChannel();
+      // useGetCurrentsUser();
     const navigate = useNavigate()
   const { channel } = useSelector(store => store.channel);
 
@@ -54,7 +56,7 @@ const ViewChannel = () => {
         <p className="text-gray-600 max-w-md">
           Upload and record at home or on the go. Everything you make public will appear here.
         </p>
-        <button className="mt-6 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+        <button onClick={()=>navigate('/create')} className="mt-6 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
           + Create
         </button>
       </div>

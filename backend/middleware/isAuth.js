@@ -16,7 +16,7 @@ const isAuth = async(req, res,next)=>{
         };
         req.id = decode.userId
         
-        console.log(decode);
+      
         next();
     } catch (error) {
         console.log('Error to get current user id : ',error);

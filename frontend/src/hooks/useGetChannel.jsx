@@ -11,7 +11,6 @@ const dispatch = useDispatch();
             try {
                 const response = await axios.get('http://localhost:8000/api/v1/channel/getChannel',{withCredentials:true});
                 dispatch(setChannel(response.data.channel));
-                
             } catch (error) {
                 console.log('While fetch current user in redux',error);
                 dispatch(setChannel(null));

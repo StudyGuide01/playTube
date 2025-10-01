@@ -15,9 +15,10 @@ const Profile = ({ setOpenProfileModel }) => {
     const response = await axios.get(
       "http://localhost:8000/api/v1/user/logout"
     );
-    console.log(response.data);
+
     dispatch(setCurrentUser(null));
     setOpenProfileModel(false);
+    navigate('/signin')
   };
 
 const handleGoogleLogin = async () => {

@@ -12,11 +12,12 @@ import Home from "./pages/Home";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import CreatePage from "./layouts/CreatePage";
 
 const ProtectRoute = ({ userData, children }) => {
     if (!userData) {
         showCustomAlert('please sign up first to use this feature');
-        return <Navigate to="/" replace />;
+        return <Navigate to="/signin" replace />;
     }
     return children;
 };
@@ -34,8 +35,10 @@ export default function App() {
       <Routes>
          <Route path="/" element={<Home/>}>
            <Route path="/shorts" element={<ProtectRoute userData={currentUser}><Shorts/></ProtectRoute>}></Route>
-           <Route path="/viewChannel" element={<ViewChannel/>}></Route>
+            <Route path="/viewChannel" element={<ProtectRoute userData={currentUser}><ViewChannel/></ProtectRoute>}></Route>
+           <Route path="/create" element={<ProtectRoute userData={currentUser}><CreatePage/></ProtectRoute>}></Route>
            <Route path="/updateChannel" element={<UpdateChannel/>}></Route>
+
         </Route>
 
         <Route path="/signup" element={<Signup />} />

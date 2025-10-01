@@ -4,6 +4,7 @@ import { FaOpenid } from "react-icons/fa";
 import { MdPlaylistAddCircle } from "react-icons/md";
 import { VscGitPullRequestCreate } from "react-icons/vsc";
 import { useState } from "react";
+import {useNavigate} from 'react-router-dom'
 
 const options = [
   { id: "video", icon: <FaVideo />, title: "Upload Video" },
@@ -13,6 +14,7 @@ const options = [
 ];
 
 const CreatePage = () => {
+  const navigate = useNavigate()
   const [selected, setSelected] = useState(null);
 
   return (
@@ -55,7 +57,7 @@ const CreatePage = () => {
           </div>
         )
        }
-       {selected &&  <button className="mt-6 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+       {selected &&  <button onClick={()=>navigate('/video')} className="mt-6 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
           + Create
         </button>}
       </div>

@@ -11,6 +11,7 @@ const port = process.env.PORT || 8000;
 //routes 
 import userRouter from './router/user.router.js';
 import channelRouter from './router/channel.router.js';
+import videoRouter from './router/video.router.js';
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
@@ -26,6 +27,8 @@ res.json({message:'SERVer is correct'});
 
 app.use('/api/v1/user',userRouter);
 app.use('/api/v1/channel',channelRouter);
+app.use('/api/v1/video',videoRouter);
+
 
 
 app.listen(port,()=>{

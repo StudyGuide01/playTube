@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 import Header from '../components/layout/Header'
 import Sidebar from '../components/layout/Sidebar'
 import CategorySlider from '../components/layout/HomeCategorySlider';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 
 const Home = () => {
     const [open,setOpen] = useState(true);
+    const location = useLocation();
     const [tabSelected, setTabSelected] = useState(() => {
   return localStorage.getItem("selectedTab") || "Home";
 });
@@ -25,8 +26,8 @@ const Home = () => {
    <Header setOpen={setOpen} open={open}/>
    <div className='flex'>
    <div><Sidebar open={open} selected={tabSelected} setSelected={setTabSelected}/></div>
-   <div className={`bg-red-500 w-full ${open ? 'ml-40' : 'ml-[50px]'}`}>
-       <CategorySlider /> 
+   <div className={` w-full ${open ? 'ml-40' : 'ml-[50px]'}`}>
+       {location.pathname === '/' && <CategorySlider /> }
        <div className=''>
         <Outlet/>
        </div>

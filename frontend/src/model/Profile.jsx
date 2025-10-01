@@ -81,7 +81,7 @@ const handleGoogleLogin = async () => {
             </>
           )}
           {currentUser?.channel && (
-            <div className="flex gap-1 items-center">
+            <div className="flex gap-1 items-center cursor-pointer">
               {" "}
               <FaStudiovinari /> PT Studio{" "}
             </div>

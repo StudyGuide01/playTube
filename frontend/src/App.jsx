@@ -38,17 +38,20 @@ export default function App() {
            <Route path="/shorts" element={<ProtectRoute userData={currentUser}><Shorts/></ProtectRoute>}></Route>
             <Route path="/viewChannel" element={<ProtectRoute userData={currentUser}><ViewChannel/></ProtectRoute>}></Route>
            <Route path="/create" element={<ProtectRoute userData={currentUser}><CreatePage/></ProtectRoute>}></Route>
+            <Route path="/createvideo" element={<ProtectRoute userData={currentUser}><UploadVideo/></ProtectRoute>}></Route>
+
            <Route path="/updateChannel" element={<UpdateChannel/>}></Route>
 
         </Route>
 
         <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<Signin />} />
+
+
         <Route path="/forgotPass" element={<ForgotPass/>}></Route>
        
        
          <Route path="/createChannel" element={<CreateChannel/>}></Route>
-         <Route path="/video" element={<UploadVideo/>}></Route>
 
 
       </Routes>

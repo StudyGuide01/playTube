@@ -31,6 +31,7 @@ app.use('/api/v1/video',videoRouter);
 
 
 
+
 app.listen(port,()=>{
     connectDB();
     console.log(`server is running on port:${port}`);

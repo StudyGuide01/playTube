@@ -17,6 +17,15 @@ const CreatePage = () => {
   const navigate = useNavigate()
   const [selected, setSelected] = useState(null);
 
+  const handleRoute = ()=>{
+    const routes= {
+      video:'/createvideo',
+    }
+    if(selected && routes[selected]){
+      navigate(routes[selected]);
+    }
+  }
+
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-5 px-5">
@@ -57,7 +66,7 @@ const CreatePage = () => {
           </div>
         )
        }
-       {selected &&  <button onClick={()=>navigate('/video')} className="mt-6 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+       {selected &&  <button onClick={handleRoute} className="mt-6 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
           + Create
         </button>}
       </div>

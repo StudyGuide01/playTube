@@ -24,7 +24,7 @@ const commentSchema = new mongoose.Schema({
   updatedAt:{type:Date}
 },{_id:true});
 
-const videoSchema = new mongoose.Schema(
+const shortSchema = new mongoose.Schema(
   {
     channel: {
       type: mongoose.Schema.Types.ObjectId,
@@ -39,11 +39,7 @@ const videoSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    videoUrl: {
-      type: String,
-      required: true,
-    },
-    thumbnail: {
+    shortUrl: {
       type: String,
       required: true,
     },
@@ -75,5 +71,5 @@ const videoSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const VideoModel = mongoose.model("Video", videoSchema);
-export default VideoModel;
+const ShortModel = mongoose.model("Short", shortSchema);
+export default ShortModel;

@@ -1,15 +1,17 @@
 import { useDispatch, useSelector } from "react-redux";
 import { FaGoogle, FaStudiovinari } from "react-icons/fa";
-import { setCurrentUser } from "../redux/userSlice";
+import { refreshCurrentUser, setCurrentUser } from "../redux/userSlice";
 import axios from "axios";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../uttils/googleAuth";
 import { useNavigate } from "react-router-dom";
+import useGetCurrentsUser from "../hooks/useGetCurrentsUser";
 
 const Profile = ({ setOpenProfileModel }) => {
   const { currentUser } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+     useGetCurrentsUser();
 
   const hanldelogout = async () => {
     const response = await axios.get(
@@ -39,6 +41,8 @@ const handleGoogleLogin = async () => {
       { withCredentials: true }
     );
     dispatch(setCurrentUser(result.data));
+  
+
     setOpenProfileModel(false);
   } catch (error) {
     console.log(error);

@@ -1,64 +1,53 @@
-import fs from "fs";
-import path from "path";
 import uploadOnCloudinary from "../config/cloudinary.js";
+import ChannelModel from "../model/channel.model.js";
 import VideoModel from "../model/video.model.js";
-// import uploadOnCloudinary from "../config/cloudinary.js";
-// import VideoModel from "../models/video.model.js";
 
-const tempDir = path.join(process.cwd(), "uploads");
+export const createVideo = async(req, res)=>{
+    try {
+        const {title, description, tags,channelId} = req.body;
 
-export const uploadVideo = async (req, res) => {
-  try {
-    const userId = req.id; // From isAuth middleware
-    const { videoId, chunkIndex, totalChunks, title, description } = req.body;
+        
+        if(!title || !req.files.video || !req.files.thumbnail || !channelId){
+            return res.status(400).json({message:'Title, description, videourl, channelId is required'})
+        }
 
-    // file already saved by multer
-    console.log("Chunk received:", chunkIndex, "of", totalChunks);
+        const channel = await ChannelModel.findById(channelId);
 
-    // Agar last chunk hai, merge process start karenge
-    if (parseInt(chunkIndex) + 1 === parseInt(totalChunks)) {
-      const userFolder = path.join(tempDir, userId.toString());
-      const chunks = [];
+        if(!channel){
+            return res.status(404).json({message:'Channel not found',success:false});
+        };
 
-      for (let i = 0; i < totalChunks; i++) {
-        const files = fs.readdirSync(userFolder);
-        const chunkFile = files.find((f) => f.includes(`${videoId}_chunk${i}`));
-        chunks.push(path.join(userFolder, chunkFile));
+        const uploadVideo = await uploadOnCloudinary(req.files.video[0].path);
+        const thumbnail = await uploadOnCloudinary(req.files.thumbnail[0].path);
+
+        let parsedTag  = [];
+      if(tags){
+          try {
+            parsedTag = JSON.parse(tags);
+        } catch (error) {
+            parsedTag = [];
+        }
       }
 
-      // Merge chunks
-      const mergedPath = path.join(userFolder, `${videoId}_merged.mp4`);
-      const writeStream = fs.createWriteStream(mergedPath);
-
-      for (const chunkPath of chunks) {
-        const data = fs.readFileSync(chunkPath);
-        writeStream.write(data);
-        fs.unlinkSync(chunkPath); // delete chunk after writing
-      }
-
-      writeStream.end();
-
-      // Upload merged video to Cloudinary
-      const videoUrl = await uploadOnCloudinary(mergedPath);
-
-      // Delete merged local file
-      fs.unlinkSync(mergedPath);
-
-      // Create Video document in DB
-      const videoDoc = await VideoModel.create({
-        channel: userId, // assuming channel = userId for now
+      const newVideo = await VideoModel.create({
+        channel:channel._id,
         title,
         description,
-        videoUrl,
-        thumbnail: "", // Thumbnail upload later
+        tags:parsedTag,
+       videoUrl:uploadVideo,
+        thumbnail:thumbnail
       });
 
-      return res.status(200).json({ message: "Video uploaded successfully", video: videoDoc });
-    }
+      //add video id in channel 
+      await ChannelModel.findByIdAndUpdate(channel._id,
+        {$push : {videos:newVideo._id}},
+        {new:true}
+    )
 
-    res.status(200).json({ message: `Chunk ${chunkIndex} uploaded successfully` });
-  } catch (error) {
-    console.log("Error uploading video:", error);
-    res.status(500).json({ message: "Error uploading video" });
-  }
-};
+    return res.status(201).json({message:'video created successfully',newVideo,success:true});
+
+    } catch (error) {
+        console.log('While create video ',error);
+        return res.status(500).json({message:'Internal server error',success:false});
+    }
+}

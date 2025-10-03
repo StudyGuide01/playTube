@@ -1,13 +1,15 @@
 import express from "express";
 import isAuth from "../middleware/isAuth.js";
-import uploadVideoChunk from "../middleware/videoUploader.multer.js";
-import { uploadVideo } from "../controller/video.controller.js";
-// import isAuth from "../middleware/isAuth.js";
-// import { uploadVideo } from "../controller/video.controller.js";
-// import uploadVideoChunk from "../middleware/video.multer.js";
-
+import upload from "../middleware/multer.js";
+import { createVideo } from "../controller/video.controller.js";
+// import { create } from "../controller/.controller.js";
 const router = express.Router();
 
-router.post("/uploadVideo", isAuth, uploadVideoChunk.single("file"), uploadVideo);
+
+router.post('/create-video',isAuth,upload.fields([
+    {name:'video',maxCount:1},
+    {name:'thumbnail',maxCount:1}
+]),createVideo);
+
 
 export default router;

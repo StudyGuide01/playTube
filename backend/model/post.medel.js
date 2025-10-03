@@ -24,33 +24,19 @@ const commentSchema = new mongoose.Schema({
   updatedAt:{type:Date}
 },{_id:true});
 
-const videoSchema = new mongoose.Schema(
+const postSchema = new mongoose.Schema(
   {
     channel: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Channel",
       required: true,
     },
-    title: {
+    content: {
       type: String,
       required: true,
     },
-    description: {
-      type: String,
-      default: "",
-    },
-    videoUrl: {
-      type: String,
-      required: true,
-    },
-    thumbnail: {
-      type: String,
-      required: true,
-    },
-    tags: [{ type: String }],
-    views: {
-      type: Number,
-      default: 0,
+    image:{
+        type:String,
     },
     likes: [
       {
@@ -58,22 +44,11 @@ const videoSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
-    disLikes: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
-    saveBy: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
+   
     comments: { commentSchema },
   },
   { timestamps: true }
 );
 
-const VideoModel = mongoose.model("Video", videoSchema);
-export default VideoModel;
+const PostModel = mongoose.model("Post", postSchema);
+export default PostModel;

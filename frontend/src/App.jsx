@@ -14,6 +14,7 @@ import Signup from "./pages/Signup";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import CreatePage from "./layouts/CreatePage";
 import UploadVideo from "./components/layout/UploadVideo";
+import UploadShorts from "./components/layout/UploadShorts";
 
 const ProtectRoute = ({ userData, children }) => {
     if (!userData) {
@@ -39,6 +40,7 @@ export default function App() {
             <Route path="/viewChannel" element={<ProtectRoute userData={currentUser}><ViewChannel/></ProtectRoute>}></Route>
            <Route path="/create" element={<ProtectRoute userData={currentUser}><CreatePage/></ProtectRoute>}></Route>
             <Route path="/createvideo" element={<ProtectRoute userData={currentUser}><UploadVideo/></ProtectRoute>}></Route>
+            <Route path="/creatshort" element={<ProtectRoute userData={currentUser}><UploadShorts/></ProtectRoute>}></Route>
 
            <Route path="/updateChannel" element={<UpdateChannel/>}></Route>
 

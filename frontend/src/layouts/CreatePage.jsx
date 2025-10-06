@@ -20,6 +20,7 @@ const CreatePage = () => {
   const handleRoute = ()=>{
     const routes= {
       video:'/createvideo',
+      short:'/creatshort'
     }
     if(selected && routes[selected]){
       navigate(routes[selected]);

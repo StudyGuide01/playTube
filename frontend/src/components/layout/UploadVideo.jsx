@@ -62,7 +62,7 @@ const UploadVideo = () => {
     formData.append("title", formInput.title);
     formData.append("description", formInput.description);
 
-    // ✅ Corrected tags
+    //  Corrected tags
     if (formInput.tags.trim()) {
       formData.append(
         "tags",
@@ -85,7 +85,7 @@ const UploadVideo = () => {
       showCustomAlert(result.data?.message);
 
       setLoading(false);
-      navigate("/"); // ✅ Correct redirect
+      navigate("/"); //  Correct redirect
     } catch (error) {
       console.log(error);
       showCustomAlert(error.response?.data?.message || "Something went wrong");

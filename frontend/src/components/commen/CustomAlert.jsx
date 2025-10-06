@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { clearMessage } from "../../redux/shortSlice";
+import { useDispatch } from "react-redux";
 
 let alertHandle;
 
@@ -9,6 +11,7 @@ export const showCustomAlert = (message) => {
 };
 
 const CustomAlert = () => {
+  const dispatch = useDispatch();
   const [mess, setMess] = useState("");
   const [visible, setVisible] = useState(false);
 
@@ -18,6 +21,17 @@ const CustomAlert = () => {
       setVisible(true);
     };
   }, []);
+
+   useEffect(() => {
+    if (visible) {
+      const timer = setTimeout(() => {
+        setVisible(false);
+        setMess("");
+        dispatch(clearMessage()); //  Redux message clear
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [visible, dispatch]);
 
   return (
     <>

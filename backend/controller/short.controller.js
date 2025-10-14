@@ -80,3 +80,30 @@ export const createShort = async (req, res) => {
       .json({ success: false, message: "Internal server error" });
   }
 };
+
+
+//get all shorts 
+export const getAllShorts = async (req, res) => {
+  try {
+    // Fetch all videos and sort by creation date (newest first)
+    const shorts = await ShortModel.find().sort({ createdAt: -1 }).populate('channel');
+
+    if (!shorts || shorts.length === 0) {
+      return res.status(404).json({
+        message: 'No videos found',
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      shorts,
+    });
+  } catch (error) {
+    console.log('Error while getting videos:', error);
+    return res.status(500).json({
+      message: 'Internal server error',
+      success: false,
+    });
+  }
+};

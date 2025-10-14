@@ -50,4 +50,31 @@ export const createVideo = async(req, res)=>{
         console.log('While create video ',error);
         return res.status(500).json({message:'Internal server error',success:false});
     }
-}
+};
+
+//get allVideos 
+
+export const getAllVideos = async (req, res) => {
+  try {
+    // Fetch all videos and sort by creation date (newest first)
+    const videos = await VideoModel.find().sort({ createdAt: -1 }).populate('channel');
+
+    if (!videos || videos.length === 0) {
+      return res.status(404).json({
+        message: 'No videos found',
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      videos,
+    });
+  } catch (error) {
+    console.log('Error while getting videos:', error);
+    return res.status(500).json({
+      message: 'Internal server error',
+      success: false,
+    });
+  }
+};

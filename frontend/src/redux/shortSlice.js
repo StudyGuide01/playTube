@@ -1,8 +1,15 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { showCustomAlert } from "../components/commen/CustomAlert";
+// import { useDispatch, useSelector } from "react-redux";
+import { setAllShorts } from "./contentSlice";
+import { setChannel } from "./channelSlice";
 
-export const uploadShort = createAsyncThunk('shorts/uploadShorts',async(formData,{rejectWithValue})=>{
+// const dispatch = useDispatch();
+// const {channel} = useSelector((store)=>store.channel);
+// const {allShorts} = useSelector((store)=>store.content);
+
+export const uploadShort = createAsyncThunk('shorts/uploadShorts',async(formData,{rejectWithValue,dispatch,getState})=>{
 try {
      const res = await axios.post(
         'http://localhost:8000/api/v1/short/create-short',
@@ -10,6 +17,19 @@ try {
         { withCredentials: true }
       );
       showCustomAlert(res.data?.message || 'short upload successfully');
+
+      //  Access current Redux state safely
+      const { channel } = getState().channel;
+      const { allShorts } = getState().content;
+
+      //  Update Redux states
+      dispatch(setAllShorts([...allShorts, res.data]));
+
+      const updatedChannel = {
+        ...channel,
+        shorts: [...(channel.shorts || []), res.data],
+      };
+      dispatch(setChannel(updatedChannel));
       return res.data;
 } catch (error) {
     showCustomAlert('Upload failed: ' + error.message);

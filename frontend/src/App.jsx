@@ -15,6 +15,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import CreatePage from "./layouts/CreatePage";
 import UploadVideo from "./components/layout/UploadVideo";
 import UploadShorts from "./components/layout/UploadShorts";
+import useGetContent from "./hooks/useGetContent";
 
 const ProtectRoute = ({ userData, children }) => {
     if (!userData) {
@@ -29,6 +30,7 @@ export default function App() {
   
   useGetCurrentsUser();
   useGetChannel();
+  useGetContent()
 
   const {currentUser} = useSelector((store)=>store.auth);
   return (

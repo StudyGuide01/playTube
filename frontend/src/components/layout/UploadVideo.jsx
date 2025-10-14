@@ -3,13 +3,16 @@ import React, { useRef, useState } from "react";
 import { FiUploadCloud } from "react-icons/fi";
 import { showCustomAlert } from "../commen/CustomAlert";
 import { useNavigate } from "react-router-dom"; // ✅ Correct hook
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setAllVideos } from "../../redux/contentSlice";
+import { setChannel } from "../../redux/channelSlice";
 
 const UploadVideo = () => {
   const videoInputRef = useRef(null);
   const thumbnailInputRef = useRef(null);
   const { channel } = useSelector((store) => store.channel);
-  console.log(channel);
+  const {allVideos} = useSelector((store)=>store.content);
+  const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
   const [formInput, setFormInput] = useState({
@@ -86,6 +89,11 @@ const UploadVideo = () => {
 
       setLoading(false);
       navigate("/"); //  Correct redirect
+      dispatch(setAllVideos([...allVideos, result.data]))
+      const updateChannel = {
+        ...channel, videos:[...(channel.videos || []),result.data ]
+      }
+      dispatch(setChannel(updateChannel));
     } catch (error) {
       console.log(error);
       showCustomAlert(error.response?.data?.message || "Something went wrong");

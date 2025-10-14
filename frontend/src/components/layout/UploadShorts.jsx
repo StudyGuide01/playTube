@@ -9,12 +9,14 @@ const UploadShorts = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
     const {channel} = useSelector((store)=>store.channel);
+
   const [formInput, setFormInput] = useState({
     title: '',
     description: '',
     tags: '',
     shortFile: null
   });
+
   const [loading,setLoading] = useState(false);
 
   const handleClickBox = (ref) => {
@@ -34,6 +36,7 @@ const UploadShorts = () => {
   const handleSubmit = async (e) => {
   e.preventDefault();
   setLoading(true);
+ 
   try {
     const formData = new FormData();
     formData.append('title', formInput.title);
@@ -43,8 +46,8 @@ const UploadShorts = () => {
     if (channel) formData.append('channelId', channel._id);
 
       //  Dispatch async upload action
-  dispatch(uploadShort(formData))
-  alert('your short is uploaded in background after upload message will be show')
+  dispatch(uploadShort(formData));
+  alert('your short is uploaded in background after upload message will be show');
   navigate('/');
 
 
@@ -120,6 +123,8 @@ const UploadShorts = () => {
           ></textarea>
         </div>
 
+
+
         {/* Tags */}
         <div>
           <label className="block text-gray-700 font-medium mb-1">Tags</label>
@@ -132,6 +137,9 @@ const UploadShorts = () => {
             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
           />
         </div>
+
+
+
 
         {/* Submit */}
         <button

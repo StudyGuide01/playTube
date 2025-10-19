@@ -16,6 +16,7 @@ import CreatePage from "./layouts/CreatePage";
 import UploadVideo from "./components/layout/UploadVideo";
 import UploadShorts from "./components/layout/UploadShorts";
 import useGetContent from "./hooks/useGetContent";
+import AllVideoPage from "./components/layout/AllVideoPage";
 
 const ProtectRoute = ({ userData, children }) => {
     if (!userData) {
@@ -43,6 +44,8 @@ export default function App() {
            <Route path="/create" element={<ProtectRoute userData={currentUser}><CreatePage/></ProtectRoute>}></Route>
             <Route path="/createvideo" element={<ProtectRoute userData={currentUser}><UploadVideo/></ProtectRoute>}></Route>
             <Route path="/creatshort" element={<ProtectRoute userData={currentUser}><UploadShorts/></ProtectRoute>}></Route>
+            {/* <Route path="/allVideo" element={<AllVideoPage/>}</Route> */}
+            <Route path="/allVideo" element={<ProtectRoute userData={currentUser}><AllVideoPage/></ProtectRoute>}></Route>
 
            <Route path="/updateChannel" element={<UpdateChannel/>}></Route>
 

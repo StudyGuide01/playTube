@@ -3,6 +3,7 @@ import Header from '../components/layout/Header'
 import Sidebar from '../components/layout/Sidebar'
 import CategorySlider from '../components/layout/HomeCategorySlider';
 import { Outlet, useLocation } from 'react-router-dom';
+import AllVideoPage from '../components/layout/AllVideoPage';
 
 const Home = () => {
     const [open,setOpen] = useState(true);
@@ -28,6 +29,10 @@ const Home = () => {
    <div><Sidebar open={open} selected={tabSelected} setSelected={setTabSelected}/></div>
    <div className={` w-full ${open ? 'ml-40' : 'ml-[50px]'}`}>
        {location.pathname === '/' && <CategorySlider /> }
+
+{/* //shwo all videos */}
+<AllVideoPage/>
+
        <div className=''>
         <Outlet/>
        </div>

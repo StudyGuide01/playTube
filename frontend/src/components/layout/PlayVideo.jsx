@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FaBackward, FaForward, FaPause, FaPlay } from 'react-icons/fa';
+import { FaBackward, FaExpand, FaForward, FaPause, FaPlay, FaVolumeMute, FaVolumeUp } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-
+import axios from 'axios';
 const PlayVideo = () => {
   const videoRef = useRef(null);
   const { id } = useParams();
+  const {currentUser} = useSelector((store)=>store.auth);
   const [showControl, setShowControl] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [video, setVideo] = useState(null);
@@ -14,12 +15,33 @@ const PlayVideo = () => {
   const [duration, setDuration] = useState(0);
   const [channel, setChannel] = useState('');
   const { allVideos } = useSelector((store) => store.content);
+  const [mute,setMute] = useState(false);
+  const [volum,setVolume] = useState(1);
+  const [subscirbe,setSubscribe] = useState(false);
+  
+
+useEffect(() => {
+  if (channel?.subscribers?.includes(currentUser?._id)) {
+    setSubscribe(true);
+  } else {
+    setSubscribe(false);
+  }
+}, [channel, currentUser]);
 
   const totalSeconds = Math.floor(videoRef.current?.duration || 0);
 
 const hours = Math.floor(totalSeconds / 3600);
 const minutes = Math.floor((totalSeconds % 3600) / 60);
 const seconds = Math.floor(totalSeconds % 60);
+
+
+//for show vidoe running time 
+const currentSeconds = Math.floor(videoRef.current?.currentTime || 0);
+// Current Time formatting
+const currentHours = Math.floor(currentSeconds / 3600);
+const currentMinutes = Math.floor((currentSeconds % 3600) / 60);
+const currentRemainingSeconds = currentSeconds % 60;
+
 
 // format 0 padding (e.g. 03:07)
 const format = (n) => String(n).padStart(2, '0');
@@ -47,7 +69,9 @@ const format = (n) => String(n).padStart(2, '0');
   const hanleSeek = (e) => {
     if (!videoRef.current) return;
     const seekTime = (e.target.value / 100) * duration;
+    
     videoRef.current.currentTime = seekTime;
+
     setProgress(e.target.value);
   };
 
@@ -65,6 +89,47 @@ const format = (n) => String(n).padStart(2, '0');
     if (videoRef.current) videoRef.current.currentTime -= 10;
   };
 
+  const handleVolume = (e)=>{
+    const vol = parseFloat(e.target.value);
+
+    setVolume(vol);
+    setMute(vol === 0);
+    if(videoRef.current) videoRef.current.volum = vol;
+  }
+
+  const hadndleMute = ()=>{
+    if(!videoRef.current) return;
+    setMute(!mute);
+    videoRef.current.muted = !mute;
+  }
+
+  // handleFullScreen 
+  const handleFullScreen = (e)=>{
+    if(!videoRef.current) return;
+    if(videoRef.current.requestFullscreen){
+      videoRef.current.requestFullscreen();
+    }
+  }
+
+
+
+ const handleSubscribe = async () => {
+  try {
+    const response = await axios.post(
+      `http://localhost:8000/api/v1/channel/subscribe/${channel._id}`,
+      {},
+      { withCredentials: true }
+    );
+   
+    // Backend returns updated channel data
+    const updatedChannel = response.data.channel;
+    setSubscribe(updatedChannel.subscribers.includes(currentUser?._id));
+ 
+  } catch (error) {
+    console.log("Subscribe error:", error);
+  }
+};
+
   return (
     <>
       <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-4">
@@ -81,7 +146,7 @@ const format = (n) => String(n).padStart(2, '0');
               controls={false}
               autoPlay
               ref={videoRef}
-              muted
+              // muted
               onPlay={() => setIsPlaying(true)}
               onPause={() => setIsPlaying(false)}
               onTimeUpdate={handleUpdateTime}
@@ -137,7 +202,11 @@ const format = (n) => String(n).padStart(2, '0');
                 </button>
                 <p>Sound</p>
                 <p>
-    {hours > 0
+ {currentHours > 0
+      ? `${format(currentHours)}:${format(currentMinutes)}:${format(currentRemainingSeconds)}`
+      : `${format(currentMinutes)}:${format(currentRemainingSeconds)}`
+    }
+  /   {hours > 0
       ? `${format(hours)}:${format(minutes)}:${format(seconds)}`
       : `${format(minutes)}:${format(seconds)}`
     }
@@ -145,7 +214,13 @@ const format = (n) => String(n).padStart(2, '0');
 
                 </div>
 
-                <div>Right div</div>
+                <div className='flex items-center gap-3'>
+                  <button onClick={hadndleMute}>{mute ? <FaVolumeMute/> : <FaVolumeUp/>}</button>
+
+<input type="range" value={mute ? 0 : volum} onChange={handleVolume} className='w-16 accent-orange-500 sm:w-24' min={0}  max={1} step={0.1}/>
+               
+               <button onClick={handleFullScreen}><FaExpand/></button>
+                </div>
               </div>
             </div>
           </div>
@@ -155,6 +230,15 @@ const format = (n) => String(n).padStart(2, '0');
             <h2 className="text-lg font-semibold">{video?.title || 'Video Title'}</h2>
             <p className="text-gray-400 text-sm mt-1">{channel?.name || 'Channel Name'}</p>
           </div>
+
+          <div>
+       {/* {channel?._id !== currentUser?.channel && <button onClick= {handleSubscribe}>Subscribe  </button>} */}
+       {channel?._id !== currentUser?.channel && (
+  <button onClick={handleSubscribe}>
+    {subscirbe ? "Subscribed" : "Subscribe"}
+  </button>
+)}
+          </div>
         </div>
       </div>
     </>
@@ -162,3 +246,14 @@ const format = (n) => String(n).padStart(2, '0');
 };
 
 export default PlayVideo;
+
+
+
+//ab or kiya karna he 
+// 1. suggested vidoe section right side me 
+// 2. jo suggested video he use bhi click karne par playVideo component par bhejna he 
+//3. fir uske niche user ka changell logo uska title like, unlike , vidoe ko dikhana he 
+// 4. fir vidoe ke niche ka jitna bhi part hota he 
+
+//5. subscripber ki functionality explain 4:47:50 time vidoe time 
+// 6. subscripber ke liye controller ( parameterh : channelId, userId,subscriber se pull or push lgana add or remove ) apne data ke ander chekk karna he ke jis user apn ko click kiya he wo apna subscriber he ya nahi time:4:51:30

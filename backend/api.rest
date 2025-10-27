@@ -1,0 +1,1 @@
+POST http://localhost:8000/api/v1/channel/subscribe/68f209df2d6904fd4737984d

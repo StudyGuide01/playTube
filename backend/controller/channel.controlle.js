@@ -129,3 +129,43 @@ export const updateChannel = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+
+
+// Subscribe or Unsubscribe
+export const subscribe = async (req, res) => {
+  try {
+    const userId = req.id;
+    const { channelId } = req.params;
+
+    // Step 1: Find the channel
+    const channel = await ChannelModel.findById(channelId);
+    if (!channel) {
+      return res.status(404).json({ message: "Channel not found", success: false });
+    }
+
+    // Step 2: Check if already subscribed
+    const isSubscribed = channel.subscribers.includes(userId);
+
+    if (isSubscribed) {
+      //  Unsubscribe
+      channel.subscribers.pull(userId);
+      await channel.save();
+      return res
+        .status(200)
+        .json({ message: "Unsubscribed successfully", success: true, channel });
+    } else {
+      //  Subscribe
+      channel.subscribers.push(userId);
+      await channel.save();
+      return res
+        .status(200)
+        .json({ message: "Subscribed successfully", success: true, channel });
+    }
+  } catch (error) {
+    console.log("While subscribing/unsubscribing channel:", error);
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error", success: false });
+  }
+};

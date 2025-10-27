@@ -1,21 +1,42 @@
+// import { createSlice } from "@reduxjs/toolkit";
+
+// const contentSlice = createSlice({
+//     name:"content",
+//     initialState:{
+//         allVideos:[],
+//         allShorts:[]
+//     },
+//     reducers:{
+//         setAllVideos:(state,action)=>{
+//             state.allVideos = action.payload
+//         },
+//         setAllShorts:(state,action)=>{
+//             state.allShorts = action.payload
+//         },
+//     }
+
+// });
+
+// export const {setAllVideos, setAllShorts} = contentSlice.actions;
+// export default contentSlice.reducer;
+
 import { createSlice } from "@reduxjs/toolkit";
 
 const contentSlice = createSlice({
-    name:"content",
-    initialState:{
-        allVideos:null,
-        allShorts:null
+  name: "content",
+  initialState: {
+    allVideos: [],
+    allShorts: [],
+  },
+  reducers: {
+    setAllVideos: (state, action) => {
+      state.allVideos = action.payload;
     },
-    reducers:{
-        setAllVideos:(state,action)=>{
-            state.allVideos = action.payload
-        },
-        setAllShorts:(state,action)=>{
-            state.allShorts = action.payload
-        },
-    }
-
+    setAllShorts: (state, action) => {
+      state.allShorts = action.payload;
+    },
+  },
 });
 
-export const {setAllVideos, setAllShorts} = contentSlice.actions;
+export const { setAllVideos, setAllShorts } = contentSlice.actions;
 export default contentSlice.reducer;

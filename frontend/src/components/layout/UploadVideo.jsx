@@ -23,7 +23,7 @@ const UploadVideo = () => {
     thumbnail: null,
   });
 
-  const navigate = useNavigate(); // ✅ Correct navigate hook
+  const navigate = useNavigate(); //  Correct navigate hook
 
   // Click handler for opening file input
   const handleBoxClick = (ref) => {
@@ -57,49 +57,101 @@ const UploadVideo = () => {
   };
 
   // Handle form submit
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+
+  //   const formData = new FormData();
+  //   formData.append("title", formInput.title);
+  //   formData.append("description", formInput.description);
+
+  //   //  Corrected tags
+  //   if (formInput.tags.trim()) {
+  //     formData.append(
+  //       "tags",
+  //       JSON.stringify(formInput.tags.split(",").map((tag) => tag.trim()))
+  //     );
+  //   }
+
+  //   formData.append("video", formInput.video);
+  //   formData.append("thumbnail", formInput.thumbnail);
+  //   formData.append("channelId", channel?._id);
+
+  //   try {
+  //     const result = await axios.post(
+  //       "http://localhost:8000/api/v1/video/create-video",
+  //       formData,
+  //       { withCredentials: true }
+  //     );
+
+  //     console.log(result.data);
+  //     showCustomAlert(result.data?.message);
+
+  //     setLoading(false);
+  //     navigate("/"); //  Correct redirect
+  //     // dispatch(setAllVideos([...allVideos, result.data]))
+  //     dispatch(setAllVideos([...(allVideos || []), result.data]));
+
+  //     const updateChannel = {
+  //       ...channel, videos:[...(channel.videos || []),result.data ]
+  //     }
+  //     dispatch(setChannel(updateChannel));
+  //   } catch (error) {
+  //     console.log(error);
+  //     showCustomAlert(error.response?.data?.message || "Something went wrong");
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  e.preventDefault();
+  setLoading(true);
 
-    const formData = new FormData();
-    formData.append("title", formInput.title);
-    formData.append("description", formInput.description);
+  const formData = new FormData();
+  formData.append("title", formInput.title);
+  formData.append("description", formInput.description);
 
-    //  Corrected tags
-    if (formInput.tags.trim()) {
-      formData.append(
-        "tags",
-        JSON.stringify(formInput.tags.split(",").map((tag) => tag.trim()))
-      );
-    }
+  if (formInput.tags.trim()) {
+    formData.append(
+      "tags",
+      JSON.stringify(formInput.tags.split(",").map((tag) => tag.trim()))
+    );
+  }
 
-    formData.append("video", formInput.video);
-    formData.append("thumbnail", formInput.thumbnail);
-    formData.append("channelId", channel?._id);
+  formData.append("video", formInput.video);
+  formData.append("thumbnail", formInput.thumbnail);
+  formData.append("channelId", channel?._id);
 
-    try {
-      const result = await axios.post(
-        "http://localhost:8000/api/v1/video/create-video",
-        formData,
-        { withCredentials: true }
-      );
+  try {
+    const result = await axios.post(
+      "http://localhost:8000/api/v1/video/create-video",
+      formData,
+      { withCredentials: true }
+    );
 
-      console.log(result.data);
-      showCustomAlert(result.data?.message);
+    console.log(result.data);
+    showCustomAlert(result.data?.message);
 
-      setLoading(false);
-      navigate("/"); //  Correct redirect
-      dispatch(setAllVideos([...allVideos, result.data]))
-      const updateChannel = {
-        ...channel, videos:[...(channel.videos || []),result.data ]
-      }
-      dispatch(setChannel(updateChannel));
-    } catch (error) {
-      console.log(error);
-      showCustomAlert(error.response?.data?.message || "Something went wrong");
-      setLoading(false);
-    }
-  };
+    // ✅ Add to existing videos array
+    dispatch(setAllVideos([...(allVideos || []), result.data.video]));
+
+    // ✅ Update channel
+    const updatedChannel = {
+      ...channel,
+      videos: [...(channel.videos || []), result.data.video],
+    };
+    dispatch(setChannel(updatedChannel));
+
+    setLoading(false);
+    navigate("/");
+
+  } catch (error) {
+    console.log(error);
+    showCustomAlert(error.response?.data?.message || "Something went wrong");
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">

@@ -4,6 +4,7 @@ import Sidebar from '../components/layout/Sidebar'
 import CategorySlider from '../components/layout/HomeCategorySlider';
 import { Outlet, useLocation } from 'react-router-dom';
 import AllVideoPage from '../components/layout/AllVideoPage';
+import ContentMenage from '../layouts/ContentMenage';
 
 const Home = () => {
     const [open,setOpen] = useState(true);
@@ -30,12 +31,17 @@ const Home = () => {
    <div className={` w-full ${open ? 'ml-40' : 'ml-[50px]'}`}>
        {location.pathname === '/' && <CategorySlider /> }
 
-{/* //shwo all videos */}
-<AllVideoPage/>
-
-       <div className=''>
+         <div className=''>
         <Outlet/>
        </div>
+
+{/* //shwo all videos */}
+{/* <AllVideoPage/> */}
+{/* <ContentMenage/> */}
+{/* <h1>Videos</h1> */}
+<AllVideoPage/>
+
+     
    </div>
    </div>
    </>

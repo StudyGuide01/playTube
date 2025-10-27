@@ -5,6 +5,7 @@ import CategorySlider from '../components/layout/HomeCategorySlider';
 import { Outlet, useLocation } from 'react-router-dom';
 import AllVideoPage from '../components/layout/AllVideoPage';
 import ContentMenage from '../layouts/ContentMenage';
+import AllShortPage from '../components/layout/AllShortPage';
 
 const Home = () => {
     const [open,setOpen] = useState(true);
@@ -35,11 +36,10 @@ const Home = () => {
         <Outlet/>
        </div>
 
-{/* //shwo all videos */}
-{/* <AllVideoPage/> */}
-{/* <ContentMenage/> */}
-{/* <h1>Videos</h1> */}
+
 <AllVideoPage/>
+<AllShortPage/>
+<h2>Hello World</h2>
 
      
    </div>

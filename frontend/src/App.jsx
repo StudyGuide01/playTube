@@ -17,6 +17,7 @@ import UploadVideo from "./components/layout/UploadVideo";
 import UploadShorts from "./components/layout/UploadShorts";
 import useGetContent from "./hooks/useGetContent";
 import AllVideoPage from "./components/layout/AllVideoPage";
+import PlayVideo from "./components/layout/PlayVideo";
 
 const ProtectRoute = ({ userData, children }) => {
     if (!userData) {
@@ -59,6 +60,7 @@ export default function App() {
        
        
          <Route path="/createChannel" element={<CreateChannel/>}></Route>
+         <Route path="/video/:id" element={<PlayVideo/>}></Route>
 
 
       </Routes>

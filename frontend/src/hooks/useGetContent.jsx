@@ -42,12 +42,13 @@
 
 import axios from 'axios';
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setAllShorts, setAllVideos } from '../redux/contentSlice';
 import CustomAlert from '../components/commen/CustomAlert';
 
 const useGetContent = () => {
   const dispatch = useDispatch();
+  const {channel} = useSelector((store)=>store.channel);
 
   useEffect(() => {
     const fetchAllVideos = async () => {
@@ -72,7 +73,7 @@ const useGetContent = () => {
 
     fetchAllVideos();
     fetchAllShorts();
-  }, [dispatch]); // ✅ Added dependency
+  }, [dispatch,channel]); // ✅ Added dependency
 };
 
 export default useGetContent;

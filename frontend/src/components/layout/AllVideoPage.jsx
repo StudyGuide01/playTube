@@ -30,25 +30,9 @@ const AllVideoPage = () => {
   const { allVideos } = useSelector((store) => store.content);
   const [duration, setDuration] = useState({});
 
-  console.log("🎬 allVideos from Redux:", allVideos);
+  // console.log("🎬 allVideos from Redux:", allVideos);
 
-  // useEffect(() => {
-  //   const fetchDurations = async () => {
-  //     //  FIX: allVideos is an array, not an object
-  //     if (Array.isArray(allVideos) && allVideos.length > 0) {
-
-  //       const durations = {};
-
-  //       for (const video of allVideos) {
-  //         const formatted = await getVideoDuration(video?.videoUrl);
-  //         durations[video._id] = formatted;
-  //       }
-  //       setDuration(durations);
-  //     }
-  //   };
-
-  //   fetchDurations();
-  // }, [allVideos]);
+ 
 
   useEffect(() => {
   const fetchDurations = async () => {
